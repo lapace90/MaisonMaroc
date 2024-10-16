@@ -1,0 +1,116 @@
+body {
+    background-color: #f3e8d6 !important; /* Couleur sable douce */
+    color: #333 !important; /* Texte sombre mais pas trop noir */
+    font-family: 'Helvetica Neue', sans-serif;
+}
+
+h1, h2, h3, h4, h5 {
+    color: #2e8bc0; /* Bleu ciel doux pour les titres */
+}
+/* Personalizza l'icona hamburger */
+.hamburger-icon {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    width: 24px; /* Larghezza dell'icona */
+    height: 24px; /* Altezza dell'icona */
+    cursor: pointer;
+}
+
+.hamburger-icon .line {
+    width: 95%;
+    height: 3px; /* Spessore delle linee */
+    background-color: #e76f51; 
+    transition: all 0.3s ease;
+    margin: 0; /* Centra le linee orizzontalmente */
+}
+/* Cambia il colore del bordo quando il menu è selezionato */
+.navbar-toggler:focus,
+.navbar-toggler:active {
+    box-shadow: 0 0 0 2px #e76f51 !important; 
+}
+
+/* Cambia i link attivi */
+.nav-link:focus,
+.nav-link:active {
+    outline: none;
+    margin-left: 10px;
+    font-weight: bold;
+}
+
+/* Trasformazione in "X" quando il menu è APERTO */
+.navbar-toggler:not(.collapsed) .hamburger-icon .line:nth-child(1) {
+    transform: rotate(45deg) translate(7px, 4.5px); /* Aggiungi traslazione */
+
+}
+
+.navbar-toggler:not(.collapsed) .hamburger-icon .line:nth-child(2) {
+    opacity: 0;
+}
+
+.navbar-toggler:not(.collapsed) .hamburger-icon .line:nth-child(3) {
+    transform: rotate(-45deg) translate(7px, -4.5px); /* Aggiungi traslazione */
+}
+
+nav {
+    position: sticky !important;
+    z-index: 5;
+}
+/* Colore di sfondo per il navbar */
+.navbar {
+    background-color: #f8f9fa !important; /* Colore chiaro, sabbia */
+    border-bottom: 2px solid #d4a373 !important; /* Colore del deserto dorato */
+    top: 0;
+    position:fixed;
+}
+
+.navbar a {
+    color: #2e8bc0 !important; /* Liens bleu ciel */
+}
+
+.btn {
+    background-color: #f4a261 !important; /* Couleur inspirée du désert pour les boutons */
+    border-color: #e76f51 !important;
+    color: #fff !important;
+}
+
+.btn:hover {
+    background-color: #e76f51 !important;
+    border-color: #d04a23;
+    color: #fff !important;
+}
+
+#footer {
+    background-color: #264653 !important; /* Un bleu nuit pour le pied de page, rappel du ciel à la tombée de la nuit */
+    color: #fff !important;
+}
+
+.carousel-item img {
+    max-height: 600px;
+    object-fit: cover;
+    width: 100%;
+}
+
+.jumbotron {
+    background-color: #f7edd3 !important; /* Le fond du jumbotron reste dans les tons sable */
+    color: #2e8bc0; /* Texte bleu ciel */
+}
+#contact {
+    background-color: #f8f9fa; /* Colore chiaro per lo sfondo */
+    padding: 30px;
+    border-radius: 8px;
+    max-width: 700px;
+    margin: auto;
+}
+
+.social-icons a {
+    font-size: 24px; /* Dimensione delle icone */
+    color: #e76f51; /* Colore delle icone */
+}
+
+.social-icons a:hover {
+    color: #2e8bc0; /* Colore al passaggio del mouse */
+}
+
+
+
