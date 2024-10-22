@@ -22,9 +22,9 @@
                             <table class="table table-striped table-bordered">
                                 <thead class="custom-thead">
                                     <tr>
-                                        <th>Nom</th>
-                                        <th>Description</th>
-                                        <th>Photo</th>
+                                        <th style="width: 200px;">Nom</th>
+                                        <th style="width: 300px;">Description</th>
+                                        <th style="width: 135px;">Photo</th>
                                         <th style="width: 150px;">Prix</th>
                                         <th style="width: 150px;">Actions</th>
                                     </tr>
@@ -33,12 +33,12 @@
                                     @foreach ($menus as $menu)
                                         <tr>
                                             <td>{{ $menu->name }}</td>
-                                            <td>{{ $menu->description }}</td>
-
+                                            <td>{{ Str::limit($menu->description, 100) }}</td>
                                             <td>
                                                 @if ($menu->photo)
-                                                    <img src="{{ asset($menu->photo) }}" alt="{{ $menu->name }}"
-                                                        width="50" class="img-thumbnail">
+                                                    <img src="{{ asset($menu->photo) }}" alt="{{ $menu->name }}" width="130" class="img-thumbnail">
+                                                    @else
+                                                    <p>Aucune image disponible</p>
                                                 @endif
                                             </td>
                                             <td>{{ $menu->price }} €</td>
@@ -60,22 +60,16 @@
                                 </tbody>
                             </table>
                         </div>
-
                         <!-- Liste visible uniquement sur les petits écrans -->
                         <div class="d-block d-md-none">
                             <ul class="list-group mt-3">
                                 @foreach ($menus as $menu)
                                     <li class="list-group-item d-flex justify-content-between align-items-center">
                                         <span>
-                                            <strong>{{ $menu->name }}</strong><br>
-                                            <small>{{ $menu->description }}</small><br>
-                                            <strong>{{ $menu->price }} €</strong>
+                                            <strong>{{ $menu->name }}</strong><br>                                
+                                            {{ $menu->price }} €
                                         </span>
                                         <span>
-                                            @if ($menu->photo)
-                                                <img src="{{ asset($menu->photo) }}" alt="{{ $menu->name }}"
-                                                    width="50" class="img-thumbnail">
-                                            @endif
                                             <a href="{{ route('menus.show', $menu->id) }}"
                                                 class="btn btn-info btn-sm">Voir</a>
                                             </form>

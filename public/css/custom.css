@@ -34,3 +34,31 @@
     background-color: #3898ad;
     color: #ffffff; /* Assure la visibilité du texte */
 }
+.dishes-list .category {
+    font-size: 1rem;
+    margin-bottom: 7px;
+}
+
+.dishes-list .category-title {
+    padding-left: 1.5rem;
+    font-weight: bold;
+    margin-bottom: 5px;
+    color: #005F75;
+}
+
+.dishes-list ul.list-unstyled {
+    padding-left: 2.5rem;
+}
+
+.dishes-list ul.list-unstyled li {
+    padding: 5px 0;
+    border-bottom: 1px solid #ddd;
+}
+
+.dishes-list ul.list-unstyled li:last-child {
+    border-bottom: none;
+}
+
+.shadow1 {
+    box-shadow: 2px 2px 3px rgba(5, 5, 5, 0.5);
+}

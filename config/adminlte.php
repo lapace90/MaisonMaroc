@@ -257,7 +257,7 @@ return [
     */
 
     'use_route_url' => false,
-    'dashboard_url' => 'home',
+    'dashboard_url' => 'admin/home',
     'logout_url' => 'logout',
     'login_url' => 'login',
     'register_url' => 'register',
@@ -335,6 +335,13 @@ return [
             'text' => 'Menus',
             'url' => 'admin/menus',
             'icon' => 'fas fa-fw fa-utensils',
+        ],
+
+        // Section pour les brouillons
+        [
+            'text' => 'Brouillons',
+            'url' => 'admin/drafts',
+            'icon' => 'fas fa-fw fa-file-alt',
         ],
 
         // Paramètres de compte

@@ -5,7 +5,7 @@
         <div class="row justify-content-center">
             <div class="col-md-8">
                 <div class="card">
-                    <div class="card-header bg-primary text-white">
+                    <div class="card-header custom-header text-white">
                         <h3 class="card-title">Ajouter une Activité</h3>
                     </div>
                     <div class="card-body">
@@ -17,7 +17,7 @@
                             </div>
                             <div class="form-group">
                                 <label for="description">Description</label>
-                                <textarea class="form-control" id="description" name="description" rows="4"></textarea>
+                                <textarea class="form-control" id="description" name="description" rows="4" required></textarea>
                             </div>
                             <div class="form-group">
                                 <label for="price">Prix</label>
@@ -27,11 +27,14 @@
                                 <label for="photo">Photo</label>
                                 <input type="file" class="form-control-file" id="photo" name="photo">
                             </div>
-                            <button type="submit" class="btn btn-success">Créer</button>
+                            <div class="d-flex justify-content-center mt-4">
+                                <button type="submit" class="btn custom-button btn-lg">Créer</button>
+                            </div>
                         </form>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+    <link href="{{ asset('css/custom.css') }}" rel="stylesheet">
 @endsection

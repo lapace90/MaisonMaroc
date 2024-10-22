@@ -11,8 +11,8 @@ class Dish extends Model
 
     protected $fillable = [
         'name',
+        'category',
         'description',
-        'price',
         'is_vegetarian',
         'is_vegan',
         // Autres colonnes que tu veux permettre

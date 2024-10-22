@@ -21,9 +21,9 @@
                             <table class="table table-striped table-bordered">
                                 <thead class="custom-thead">
                                     <tr>
-                                        <th>Nom</th>
-                                        <th>Description</th>
-                                        <th>Photo</th>
+                                        <th style="width: 200px;">Nom</th>
+                                        <th style="width: 300px;">Description</th>
+                                        <th style="width: 135px;">Photo</th>
                                         <th style="width: 100px;">Durée</th>
                                         <th style="width: 125px;">Prix</th>
                                         <th style="width: 150px;">Actions</th>
@@ -33,11 +33,15 @@
                                     @foreach ($activities as $activity)
                                         <tr>
                                             <td>{{ $activity->name }}</td>
-                                            <td>{{ $activity->description }}</td>
+                                            <td>{{ Str::limit($activity->description, 100) }} <a
+                                                    href="{{ route('activities.show', $activity->id) }}">Lire plus</a></td>
                                             <td>
-                                                @if ($activity->photo)
-                                                    <img src="{{ asset($activity->photo) }}" alt="{{ $activity->name }}"
-                                                        width="50" class="img-thumbnail">
+                                                @if ($activity->image)
+                                                    <!-- Assure-toi d'utiliser le bon attribut pour l'image -->
+                                                    <img src="{{ asset($activity->image) }}" alt="{{ $activity->name }}"
+                                                        width="130" class="img-thumbnail">
+                                                @else
+                                                    <p>Aucune image disponible</p>
                                                 @endif
                                             </td>
                                             <td>{{ $activity->duration }}</td>
@@ -51,7 +55,8 @@
                                                     method="POST" class="d-inline">
                                                     @csrf
                                                     @method('DELETE')
-                                                    <button type="submit" class="btn btn-danger btn-sm w-100 my-1">Supprimer</button>
+                                                    <button type="submit"
+                                                        class="btn btn-danger btn-sm w-100 my-1">Supprimer</button>
                                                 </form>
                                             </td>
                                         </tr>
@@ -67,7 +72,7 @@
                                     <li class="list-group-item d-flex justify-content-between align-items-center">
                                         <span>
                                             <strong>{{ $activity->name }}</strong><br>
-                                            <small>{{ $activity->description }}</small>
+                                            {{ $activity->price }}
                                         </span>
                                         <span>
                                             <a href="{{ route('activities.show', $activity->id) }}"

@@ -2,9 +2,10 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Http\Controllers\Controller;
+use App\Models\Draft;
 use App\Models\Activity;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
 
 class ActivityController extends Controller
 {
@@ -22,26 +23,42 @@ class ActivityController extends Controller
     }
 
     public function store(Request $request)
-    {
-        // Valider les données entrantes
-        $validatedData = $request->validate([
-            'name' => 'required|string|max:255',
-            'description' => 'nullable|string',
-            'price' => 'required|numeric',
-            'photo' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
-        ]);
+{
+    $request->validate([
+        'name' => 'required|string|max:255',
+        'description' => 'nullable|string',
+        'price' => 'required|numeric',
+        'photo' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+    ], [
+        'name.required' => 'Le nom est obligatoire.',
+        'price.required' => 'Le prix est obligatoire.',
+    ]);
 
-        // Gérer le téléchargement d'image si besoin
-        if ($request->hasFile('photo')) {
-            // Code pour stocker l'image (par exemple, dans le dossier public)
-            $path = $request->file('photo')->store('activities', 'public');
-            $validatedData['photo'] = $path; // Ajouter le chemin de l'image validée
-        }
+    // Si la validation échoue, on sauvegarde le brouillon
+    $draft = new Draft();
+    $draft->name = $request->name;
+    $draft->description = $request->description;
+    $draft->price = $request->price;
+    $draft->user_id = auth()->id();
+    $draft->type = 'activity'; // Indique que c'est une activité
 
-        // Créer une nouvelle activité
-        Activity::create($validatedData);
-        return redirect()->route('activities.index')->with('success', 'Activité créée avec succès.');
+    if ($request->hasFile('photo')) {
+        $path = $request->file('photo')->store('drafts', 'public');
+        $draft->photo = $path;
     }
+
+    $draft->save();
+
+    return redirect()->route('activities.index')->with('success', 'Activité enregistrée dans les brouillons.');
+}
+
+
+    public function show($id)
+    {
+        $activity = Activity::findOrFail($id);
+        return view('admin.products.activities.show', compact('activity'));
+    }
+
 
     public function edit(Activity $activity)
     {

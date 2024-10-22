@@ -2,10 +2,11 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Http\Controllers\Controller;
-use App\Models\Menu;
-use Illuminate\Http\Request;
 use App\Models\Dish;
+use App\Models\Menu;
+use App\Models\Draft;
+use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
 
 class MenuController extends Controller
 {
@@ -23,27 +24,41 @@ class MenuController extends Controller
 
     public function store(Request $request)
     {
-        $validatedData = $request->validate([
+        $request->validate([
             'name' => 'required|string|max:255',
             'description' => 'nullable|string',
             'price' => 'required|numeric',
             'photo' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
-            'dishes' => 'required|array', // Assure-toi que les plats sont envoyés sous forme de tableau
+        ], [
+            'name.required' => 'Le nom est obligatoire.',
+            'price.required' => 'Le prix est obligatoire.',
         ]);
 
-        // Gérer le téléchargement d'image si besoin
+        // Sauvegarder le brouillon
+        $draft = new Draft();
+        $draft->name = $request->name;
+        $draft->description = $request->description;
+        $draft->price = $request->price;
+        $draft->user_id = auth()->id();
+        $draft->type = 'menu'; // Indique que c'est un menu
+
         if ($request->hasFile('photo')) {
-            // Code pour stocker l'image
+            $path = $request->file('photo')->store('drafts', 'public');
+            $draft->photo = $path;
         }
 
-        // Crée le menu
-        $menu = Menu::create($validatedData);
+        $draft->save();
 
-        // Associe les plats sélectionnés
-        $menu->dishes()->sync($request->dishes);
-
-        return redirect()->route('menus.index')->with('success', 'Menu créé avec succès.');
+        return redirect()->route('menus.index')->with('success', 'Menu enregistré dans les brouillons.');
     }
+
+    public function show($id)
+    {
+        $menu = Menu::findOrFail($id);
+        $dishes = $menu->dishes;
+        return view('admin.products.menus.show', compact('menu', 'dishes'));
+    }
+
 
     public function edit(Menu $menu)
     {
