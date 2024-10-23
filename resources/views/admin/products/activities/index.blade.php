@@ -25,8 +25,9 @@
                                         <th style="width: 300px;">Description</th>
                                         <th style="width: 135px;">Photo</th>
                                         <th style="width: 100px;">Durée</th>
-                                        <th style="width: 125px;">Prix</th>
-                                        <th style="width: 150px;">Actions</th>
+                                        <th style="width: 100px;">Prix</th>
+                                        <th style="width: 75px">Statut</th>
+                                        <th style="width: 100px;">Actions</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -44,9 +45,22 @@
                                                     <p>Aucune image disponible</p>
                                                 @endif
                                             </td>
-                                            <td>{{ $activity->duration }}</td>
+                                            <td>{{ $activity->formatted_duration }}</td>
                                             <td>{{ $activity->price }} €</td>
                                             <td>
+                                                @if ($activity->status)
+                                                    <span class="badge badge-success" data-toggle="tooltip"
+                                                        data-placement="top"
+                                                        title="L'activité est visible sur le site">Activé</span>
+                                                @else
+                                                    <span class="badge badge-danger" data-toggle="tooltip"
+                                                        data-placement="top"
+                                                        title="L'activité n'est pas visible sur le site">Désactivé</span>
+                                                @endif
+                                            </td>
+
+                                            <td>
+
                                                 <a href="{{ route('activities.show', $activity->id) }}"
                                                     class="btn btn-info btn-sm w-100 my-1">Voir</a>
                                                 <a href="{{ route('activities.edit', $activity->id) }}"
@@ -56,7 +70,7 @@
                                                     @csrf
                                                     @method('DELETE')
                                                     <button type="submit"
-                                                        class="btn btn-danger btn-sm w-100 my-1">Supprimer</button>
+                                                        class="btn btn-danger btn-sm w-100 my-1" data-toggle="modal" data-target="#confirmDeleteModal">Supprimer</button>
                                                 </form>
                                             </td>
                                         </tr>
@@ -87,6 +101,11 @@
             </div>
         </div>
     </div>
+    {{-- Composant de confirmation d'effacement --}}
+    <x-confirm-modal modalId="confirmDeleteModal" title="Confirmer la suppression"
+        action="{{ route('activities.destroy', $activity->id) }}" method="DELETE" confirmText="Supprimer">
+        Êtes-vous sûr de vouloir supprimer cet élément ?
+    </x-confirm-modal>
     <link href="{{ asset('css/custom.css') }}" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
 @endsection

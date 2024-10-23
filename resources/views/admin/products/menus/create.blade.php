@@ -1,6 +1,12 @@
 @extends('adminlte::page')
 
 @section('content')
+@if (session('success'))
+    <x-alert type="success" :dismissible="'true'">
+        {{ session('success') }}
+    </x-alert>
+@endif
+
     <div class="container mt-5">
         <div class="row justify-content-center">
             <div class="col-md-8">
@@ -21,7 +27,7 @@
                             </div>
                             <div class="form-group">
                                 <label for="price">Prix</label>
-                                <input type="number" class="form-control" id="price" name="price" required>
+                                <input type="number" step="0.01" class="form-control" id="price" name="price" required>
                             </div>
                             <div class="form-group">
                                 <label for="photo">Photo</label>
@@ -42,11 +48,14 @@
                                 </div>
                             </div>
                             <div class="form-group row pt-3">
-                                <button type="submit" class="btn custom-create-button col-6 mx-auto">Créer</button>
+                                <button type="submit" class="btn btn-warning col-4 mx-auto" name="draft" value="1">Sauvegarder Brouillon</button>
+                                <button type="submit" class="btn custom-create-button col-4 mx-auto">Créer</button>
                             </div>
                         </form>
                     </div>
                 </div>
+                <a href="{{ route('menus.index') }}" class="btn custom-button"><i class="fas fa-arrow-left"></i>
+                    Retour à la liste</a>
             </div>
         </div>
     </div>

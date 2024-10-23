@@ -7,15 +7,12 @@
     <title>Maison d'Hôte</title>
     @vite('resources/css/app.css')
     @vite('resources/js/app.js')
-    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/5.0.0-alpha1/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
-
 </head>
 
 <body>
-
-    <nav class="navbar navbar-expand-lg navbar bg">
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
         <div class="container-fluid">
             <a class="navbar-brand" href="#">Maison d'Hôte</a>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
@@ -47,15 +44,13 @@
             </div>
         </div>
     </nav>
-
-
     <!-- Jumbotron -->
     <header class="bg pt-3">
         <div class="container-fluid">
             <div class="jumbotron text-center">
                 <h1 class="display-4">{{ __('messages.welcome') }}</h1>
                 <p class="lead">Découvrez la beauté du désert marocain dans notre charmante maison d'hôte.</p>
-                <a class="btn btn-lg" href="#" role="button">Réservez maintenant</a>
+                <a class="btn btn-lg my-4" href="#" role="button">Réservez maintenant</a>
             </div>
         </div>
         <!-- Carrousel -->
@@ -68,21 +63,21 @@
                 </ol>
                 <div class="carousel-inner">
                     <div class="carousel-item active">
-                        <img src="https://via.placeholder.com/1200x500" class="d-block w-100" alt="Activité 1">
+                        <img src="https://via.placeholder.com/1200x850" class="d-block w-100" alt="Activité 1">
                         <div class="carousel-caption d-none d-md-block">
                             <h5>Activité 1</h5>
                             <p>Description de l'activité 1.</p>
                         </div>
                     </div>
                     <div class="carousel-item">
-                        <img src="https://via.placeholder.com/1200x500" class="d-block w-100" alt="Activité 2">
+                        <img src="https://via.placeholder.com/1200x850" class="d-block w-100" alt="Activité 2">
                         <div class="carousel-caption d-none d-md-block">
                             <h5>Activité 2</h5>
                             <p>Description de l'activité 2.</p>
                         </div>
                     </div>
                     <div class="carousel-item">
-                        <img src="https://via.placeholder.com/1200x500" class="d-block w-100" alt="Activité 3">
+                        <img src="https://via.placeholder.com/1200x850" class="d-block w-100" alt="Activité 3">
                         <div class="carousel-caption d-none d-md-block">
                             <h5>Activité 3</h5>
                             <p>Description de l'activité 3.</p>
@@ -99,65 +94,65 @@
                 </a>
             </div>
         </div>
-
     </header>
 
     <!-- Section Activités -->
-    <main class="container mt-4">
-        <section class="mb-4">
-            <h2>Activités proposées</h2>
-            <div class="row">
+    <section class="container my-5">
+        <h2 class="my-5">Activités Proposées</h2>
+        <div class="row">
+            @foreach ($activities as $activity)
                 <div class="col-md-4">
                     <div class="card mb-4">
-                        <img src="https://via.placeholder.com/400x300" class="card-img-top" alt="Activité 1">
+                        <img src="{{ $activity->image }}" class="card-img-top" alt="{{ $activity->name }}">
                         <div class="card-body">
-                            <h5 class="card-title">Activité 1</h5>
-                            <p class="card-text">Description de l'activité 1.</p>
+                            <h5 class="card-title">{{ $activity->name }}</h5>
+                            <p class="card-text">{{ Str::limit($activity->description, 80) }}</p>
                             <a href="#" class="btn">En savoir plus</a>
                         </div>
                     </div>
                 </div>
+            @endforeach
+        </div>
+    </section>
+
+    <!-- Section Menus -->
+    <section class="container my-5">
+        <h2>Nos Menus</h2>
+        <div class="row">
+            @foreach ($menus as $menu)
                 <div class="col-md-4">
                     <div class="card mb-4">
-                        <img src="https://via.placeholder.com/400x300" class="card-img-top" alt="Activité 2">
+                        <img src="{{ $menu->photo }}" class="card-img-top" alt="{{ $menu->name }}">
                         <div class="card-body">
-                            <h5 class="card-title">Activité 2</h5>
-                            <p class="card-text">Description de l'activité 2.</p>
-                            <a href="#" class="btn">En savoir plus</a>
+                            <h5 class="card-title">{{ $menu->name }}</h5>
+                            <p class="card-text">{{ $menu->description }}</p>
+                            <a href="#" class="btn">Voir le menu</a>
                         </div>
                     </div>
                 </div>
-                <div class="col-md-4">
-                    <div class="card mb-4">
-                        <img src="https://via.placeholder.com/400x300" class="card-img-top" alt="Activité 3">
-                        <div class="card-body">
-                            <h5 class="card-title">Activité 3</h5>
-                            <p class="card-text">Description de l'activité 3.</p>
-                            <a href="#" class="btn">En savoir plus</a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
+            @endforeach
+        </div>
+    </section>
     </main>
-    <section class="container mt-4">
-        <div id="contact" class=" class="mb-4"">
+    <!-- Section Contact -->
+    <section class="container mt-4 ">
+        <div id="contact" class="mb-4">
             <h2 class="mb-5 text-center">{{ __('messages.contact_us') }}</h2>
             <form id="contactForm" action="{{ route('contact.send') }}" method="POST">
                 @csrf
-                <div class="form-group">
+                <div class="form-group mt-3">
                     <label for="name">Nom</label>
                     <input type="text" class="form-control" id="name" name="name" required>
                 </div>
-                <div class="form-group">
+                <div class="form-group mt-3">
                     <label for="email">Email</label>
                     <input type="email" class="form-control" id="email" name="email" required>
                 </div>
-                <div class="form-group">
+                <div class="form-group mt-3">
                     <label for="message">Message</label>
                     <textarea class="form-control" id="message" name="message" rows="5" required></textarea>
                 </div>
-                <div class="text-center">
+                <div class="text-center mt-4">
                     <button type="submit" class="btn btn-lg">Envoyer</button>
                 </div>
             </form>

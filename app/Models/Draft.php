@@ -10,11 +10,11 @@ class Draft extends Model
     use HasFactory;
 
     protected $fillable = [
-        'name',
-        'description',
-        'price',
-        'photo',
-        'user_id',
-        'type', // Ajoute le champ type ici
+        'name', 'description', 'price', 'photo', 'user_id', 'type', 'duration', 'image'
     ];
+
+    public function dishes()
+    {
+        return $this->belongsToMany(Dish::class, 'draft_dish', 'draft_id', 'dish_id');
+    }
 }

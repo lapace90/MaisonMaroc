@@ -41,7 +41,18 @@ Route::middleware(['auth'])->prefix('admin')->group(function () {
     Route::get('/home', [HomeController::class, 'indexAdmin'])->name('admin.home'); // Renommé ici
     Route::get('dashboard', [DashboardController::class, 'index'])->name('admin.dashboard');
     Route::resource('menus', MenuController::class);
+    Route::get('menus/{id}/edit', [MenuController::class, 'edit'])->name('menus.edit'); // pour afficher le formulaire d'édition
+    Route::put('menus/{id}', [MenuController::class, 'update'])->name('menus.update'); // pour mettre à jour le menu
+    Route::delete('/menus/{id}', [MenuController::class, 'destroy'])->name('menus.destroy');
     Route::resource('activities', ActivityController::class);
+    Route::put('/activities/{id}', [ActivityController::class, 'update'])->name('activities.update');
+    Route::delete('/activities/{id}', [ActivityController::class, 'destroy'])->name('activities.destroy');
     Route::get('agenda', [AgendaController::class, 'index'])->name('admin.agenda.index'); // Ajouter la route pour l'agenda
+
+    // Routes pour les brouillons
     Route::resource('drafts', DraftController::class);
+    Route::post('drafts/menu', [DraftController::class, 'storeMenuDraft'])->name('drafts.storeMenuDraft');
+    Route::post('drafts/activity', [DraftController::class, 'storeActivityDraft'])->name('drafts.storeActivityDraft');
+    Route::put('drafts/{draft}', [DraftController::class, 'update'])->name('drafts.update');
+    Route::delete('drafts/{draft}', [DraftController::class, 'destroy'])->name('drafts.destroy');
 });

@@ -26,6 +26,7 @@
                                         <th style="width: 300px;">Description</th>
                                         <th style="width: 135px;">Photo</th>
                                         <th style="width: 150px;">Prix</th>
+                                        <th style="width: 75px">Statut</th>
                                         <th style="width: 150px;">Actions</th>
                                     </tr>
                                 </thead>
@@ -36,12 +37,24 @@
                                             <td>{{ Str::limit($menu->description, 100) }}</td>
                                             <td>
                                                 @if ($menu->photo)
-                                                    <img src="{{ asset($menu->photo) }}" alt="{{ $menu->name }}" width="130" class="img-thumbnail">
-                                                    @else
+                                                    <img src="{{ asset($menu->photo) }}" alt="{{ $menu->name }}"
+                                                        width="130" class="img-thumbnail">
+                                                @else
                                                     <p>Aucune image disponible</p>
                                                 @endif
                                             </td>
                                             <td>{{ $menu->price }} €</td>
+                                            <td>
+                                                @if ($menu->status)
+                                                    <span class="badge badge-success" data-toggle="tooltip"
+                                                        data-placement="top"
+                                                        title="Le menu est visible sur le site">Activé</span>
+                                                @else
+                                                    <span class="badge badge-danger" data-toggle="tooltip"
+                                                        data-placement="top"
+                                                        title="Le menu n'est pas visible sur le site">Désactivé</span>
+                                                @endif
+                                            </td>
                                             <td class="text-center">
                                                 <a href="{{ route('menus.show', $menu->id) }}"
                                                     class="btn btn-info btn-sm w-100 my-1">Voir</a>
@@ -49,10 +62,9 @@
                                                     class="btn btn-warning btn-sm w-100 my-1">Modifier</a>
                                                 <form action="{{ route('menus.destroy', $menu->id) }}" method="POST"
                                                     class="d-inline">
-                                                    @csrf
-                                                    @method('DELETE')
+                                                  
                                                     <button type="submit"
-                                                        class="btn btn-danger btn-sm w-100 my-1">Supprimer</button>
+                                                        class="btn btn-danger btn-sm w-100 my-1" data-toggle="modal" data-target="#confirmDeleteModal">Supprimer</button>
                                                 </form>
                                             </td>
                                         </tr>
@@ -66,7 +78,7 @@
                                 @foreach ($menus as $menu)
                                     <li class="list-group-item d-flex justify-content-between align-items-center">
                                         <span>
-                                            <strong>{{ $menu->name }}</strong><br>                                
+                                            <strong>{{ $menu->name }}</strong><br>
                                             {{ $menu->price }} €
                                         </span>
                                         <span>
@@ -83,6 +95,12 @@
             </div>
         </div>
     </div>
+    {{-- Composant de confirmation d'effacement --}}
+    <x-confirm-modal modalId="confirmDeleteModal" title="Confirmer la suppression"
+        action="{{ route('menus.destroy', $menu->id) }}" method="DELETE" confirmText="Supprimer">
+        Êtes-vous sûr de vouloir supprimer cet élément ?
+    </x-confirm-modal>
+
     <link href="{{ asset('css/custom.css') }}" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
 @endsection

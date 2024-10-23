@@ -23,4 +23,8 @@ class Dish extends Model
     {
         return $this->belongsToMany(Menu::class);
     }
+    public function drafts()
+    {
+        return $this->belongsToMany(Draft::class, 'draft_dish', 'dish_id', 'draft_id');
+    }
 }

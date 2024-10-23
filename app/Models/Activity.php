@@ -14,7 +14,8 @@ class Activity extends Model
         'description',
         'duration',
         'photo',
-        'price'
+        'price',
+        'status',
     ];
 }
 

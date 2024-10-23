@@ -62,3 +62,63 @@
 .shadow1 {
     box-shadow: 2px 2px 3px rgba(5, 5, 5, 0.5);
 }
+
+
+.custom-switch .custom-control-input:checked ~ .custom-control-label::before {
+    background-color: #28a745; /* Couleur pour le switch activé */
+    border-color: #28a745; /* Couleur de la bordure activée */
+}
+
+.custom-switch .custom-control-label {
+    transition: background-color 0.3s ease, border-color 0.3s ease; /* Effet de transition */
+}
+
+.custom-control-label::before {
+    border-radius: 30px; /* Coins arrondis */
+    background-color: #ccc; /* Couleur pour le switch désactivé */
+    border: 1px solid #ccc; /* Bordure du switch */
+    transition: background-color 0.3s ease, border-color 0.3s ease; /* Effet de transition */
+}
+
+.custom-control-input:checked + .custom-control-label::before {
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.2); /* Ombre légère pour le switch */
+}
+
+/* Couleurs du texte pour l'état activé/désactivé */
+.custom-control-label {
+    color: #333; /* Couleur du texte */
+}
+
+.custom-control-input:checked + .custom-control-label {
+    color: #333; /* Couleur du texte quand activé */
+}
+
+details summary {
+    cursor: pointer;
+    font-weight: bold;
+    color: #007bff; /* Couleur du lien */
+}
+
+details[open] summary {
+    color: #0056b3; /* Couleur quand le détail est ouvert */
+}
+
+details p {
+    margin-top: 5px;
+    font-size: 0.9em;
+}
+
+td {
+    position: relative;
+    height: 100px; /* Ajuste selon la hauteur désirée de la ligne */
+    vertical-align: middle; /* Assure que le contenu reste centré verticalement */
+}
+
+.badge {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+

@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Menu;
+use App\Models\Activity;
 use Illuminate\Http\Request;
 
 class HomeController extends Controller
@@ -23,7 +25,11 @@ class HomeController extends Controller
      */
     public function index()
     {
-        return view('appHome');
+        // Récupérer uniquement les menus et activités activés
+        $menus = Menu::where('status', true)->get();
+        $activities = Activity::where('status', true)->get();
+
+        return view('appHome', compact('menus', 'activities'));
     }
     
     /**

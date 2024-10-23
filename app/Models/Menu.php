@@ -13,7 +13,7 @@ class Menu extends Model
         'description',
         'price',
         'photo',
-        
+        'status',
     ];
 
     // Définir la relation Many-to-Many avec les plats
