@@ -37,8 +37,9 @@
                                             <td>{{ Str::limit($menu->description, 100) }}</td>
                                             <td>
                                                 @if ($menu->photo)
-                                                    <img src="{{ asset($menu->photo) }}" alt="{{ $menu->name }}"
+                                                    <img src="{{ asset('storage/' . $menu->photo) }}" alt="{{ $menu->name }}"
                                                         width="130" class="img-thumbnail">
+
                                                 @else
                                                     <p>Aucune image disponible</p>
                                                 @endif

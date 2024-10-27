@@ -59,7 +59,7 @@
 
                             {{-- Toggle Switch for Active/Inactive Status --}}
                             <div class="form-group">
-                                <x-switch-toggle id="menu-status" name="status" :checked="$menu->status" label="Activé" />
+                                <x-switch-toggle id="menu-status" name="status" :checked="$menu->status" label="Disponible" />
                             </div>
 
                             {{-- Dropdown to select dishes --}}

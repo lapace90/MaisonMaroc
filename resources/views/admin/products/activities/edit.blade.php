@@ -71,7 +71,7 @@
 
                             {{-- Toggle Switch for Active/Inactive Status --}}
                             <div class="form-group">
-                                <x-switch-toggle id="activity-status" name="status" :checked="$activity->status" label="Statut" />
+                                <x-switch-toggle id="activity-status" name="status" :checked="$activity->status" label="Disponible" />
                             </div>
 
                             {{-- Save button --}}

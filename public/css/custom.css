@@ -121,4 +121,13 @@ td {
     transform: translate(-50%, -50%);
 }
 
-
+#calendar {
+    max-width: 95%;
+    margin: 0 auto;
+}
+.fc-daygrid-day {
+    min-height: 100px; /* Ensure each day cell has a minimum height */
+}
+.fc-scroller {
+    overflow: visible !important; /* Ensure the calendar is fully visible */
+}

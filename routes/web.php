@@ -11,6 +11,7 @@ use App\Http\Controllers\Admin\MenuController;
 use App\Http\Controllers\Admin\AgendaController;
 use App\Http\Controllers\Admin\ActivityController;
 use App\Http\Controllers\Admin\DashboardController;
+use App\Http\Controllers\Admin\ReservationController;
 
 /*
 |--------------------------------------------------------------------------
@@ -48,6 +49,12 @@ Route::middleware(['auth'])->prefix('admin')->group(function () {
     Route::put('/activities/{id}', [ActivityController::class, 'update'])->name('activities.update');
     Route::delete('/activities/{id}', [ActivityController::class, 'destroy'])->name('activities.destroy');
     Route::get('agenda', [AgendaController::class, 'index'])->name('admin.agenda.index'); // Ajouter la route pour l'agenda
+
+    // Routes pour les réservations
+    Route::resource('reservations', ReservationController::class);
+    Route::get('reservations/{id}/edit', [ReservationController::class, 'edit'])->name('reservations.edit');
+    Route::put('reservations/{id}', [ReservationController::class, 'update'])->name('reservations.update');
+    Route::delete('reservations/{id}', [ReservationController::class, 'destroy'])->name('reservations.destroy');
 
     // Routes pour les brouillons
     Route::resource('drafts', DraftController::class);
