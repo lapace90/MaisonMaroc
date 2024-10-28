@@ -57,15 +57,16 @@ class Reservation extends Model
         'reservation_date',
         'check_in_date',
         'check_out_date',
-        'number_of_people',
+        'number_of_adults',
+        'number_of_children',
         'amount',
         'payment_status',
         'invoice_sent',
-        'customer_email',
-        'notes',
-        'payment_date',
         'reservation_menu',
         'reservation_activity',
+        'room_type_id',
+        'customer_email',
+        'notes',
     ];
     /**
      * The menus that belong to the reservation.
@@ -80,5 +81,12 @@ class Reservation extends Model
     public function activities()
     {
         return $this->belongsToMany(Activity::class, 'reservation_activity')->withPivot('quantity');
+    }
+    /**
+     * The room type that belong to the reservation.
+     */
+    public function rooms()
+    {
+        return $this->belongsToMany(RoomType::class, 'reservation_room');
     }
 }

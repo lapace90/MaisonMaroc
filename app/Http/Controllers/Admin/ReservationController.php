@@ -2,13 +2,13 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Models\Dish;
 use App\Models\Menu;
 use App\Models\Activity;
 use App\Models\RoomType;
 use App\Models\Reservation;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\Controller;
 
 class ReservationController extends Controller
@@ -20,6 +20,12 @@ class ReservationController extends Controller
         return view('admin.reservations.index', compact('reservations')); // Affiche la vue avec les réservations
     }
 
+    public function reservationList()
+    {
+        $reservations = Reservation::all();
+        return view('admin.reservations.list', compact('reservations'));
+    }
+
     // Affiche le formulaire de création d'une nouvelle réservation
     public function create()
     {
@@ -27,53 +33,53 @@ class ReservationController extends Controller
         $menus = Menu::all();
         $menu = Menu::find(1);
         $activities = Activity::all();
-        $dishes = Dish::all();
-        return view('admin.reservations.create', compact('menus', 'activities', 'rooms', 'dishes', 'menu')); // Affiche la vue pour ajouter une réservation
+        return view('admin.reservations.create', compact('menus', 'activities', 'rooms', 'menu')); // Affiche la vue pour ajouter une réservation
     }
 
     // Stocke une nouvelle réservation
     public function store(Request $request)
     {
-        //dd($request->all());
-        $request->validate([
+        // Transformez le format des dates avant la validation
+        $request->merge([
+            'check_in_date' => Carbon::createFromFormat('d/m/Y', $request->check_in_date)->format('Y-m-d'),
+            'check_out_date' => Carbon::createFromFormat('d/m/Y', $request->check_out_date)->format('Y-m-d'),
+        ]);
+
+        $validatedData = $request->validate([
             'customer_name' => 'required|string|max:255',
-            'check_in_date' => 'required|date_format:d/m/Y',
-            'check_out_date' => 'required|date_format:d/m/Y|after:check_in_date',
+            'reservation_date' => now(), // Ajoutez cette ligne pour la date de réservation
+            'check_in_date' => 'required|date',
+            'check_out_date' => 'required|date',
             'number_of_adults' => 'required|integer|min:1',
             'number_of_children' => 'nullable|integer|min:0',
-            'amount' => 'required|numeric|min:0',
-            'payment_status' => 'required|string|in:paid,pending,failed',
-            'invoice_sent' => 'required|boolean',
+            'room_type_id' => 'required|exists:room_types,id',
+            'res_menus' => 'nullable|array',
+            'res_activities' => 'nullable|array',
+            'amount' => 'required|numeric',
+            'payment_status' => 'required|string',
             'customer_email' => 'required|email',
             'notes' => 'nullable|string',
-            'reservation_menu' => 'nullable|array',
-            'reservation_activity' => 'nullable|array',
-            'room_type_id' => 'required|exists:room_types,id',
         ]);
-
-        // Parse the dates to the correct format
-        $check_in_date = Carbon::createFromFormat('d/m/Y', $request->check_in_date)->format('Y-m-d');
-        $check_out_date = Carbon::createFromFormat('d/m/Y', $request->check_out_date)->format('Y-m-d');
 
         // Crée la réservation avec la date de réservation générée automatiquement
-        Reservation::create([
-            'customer_name' => $request->customer_name,
-            'reservation_date' => now(), // Génère la date actuelle
-            'check_in_date' => $check_in_date,
-            'check_out_date' => $check_out_date,
-            'number_of_adults' => 'required|integer|min:1',
-            'number_of_children' => 'nullable|integer|min:0',
-            'amount' => $request->amount,
-            'payment_status' => $request->payment_status,
-            'invoice_sent' => $request->invoice_sent,
-            'reservation_menu' => 'nullable|array',
-            'reservation_activity' => 'nullable|array',
-            'room_type_id' => 'required|exists:room_types,id',
-            'customer_email' => $request->customer_email, // Assurez-vous que ce champ existe dans votre modèle
-            'notes' => $request->notes,
-        ]);
+        $reservation = Reservation::create($validatedData);
+        // Ajouter les menus à la table pivot
+        if ($request->has('res_menus')) {
+            $reservation->menus()->attach($request->input('res_menus'));
+        }
+
+        // Ajouter les activités à la table pivot
+        if ($request->has('res_activities')) {
+            $reservation->activities()->attach($request->input('res_activities'));
+        }
 
         return redirect()->route('reservations.index')->with('success', 'Réservation ajoutée avec succès.');
+    }
+
+    public function show($id)
+    {
+        $reservation = Reservation::with(['menus', 'activities'])->findOrFail($id);
+        return view('admin.reservations.show', compact('reservation'));
     }
 
     // Affiche le formulaire d'édition d'une réservation

@@ -51,10 +51,12 @@ Route::middleware(['auth'])->prefix('admin')->group(function () {
     Route::get('agenda', [AgendaController::class, 'index'])->name('admin.agenda.index'); // Ajouter la route pour l'agenda
 
     // Routes pour les réservations
+    Route::get('reservations/list', [ReservationController::class, 'reservationList'])->name('reservations.list');
     Route::resource('reservations', ReservationController::class);
     Route::get('reservations/{id}/edit', [ReservationController::class, 'edit'])->name('reservations.edit');
     Route::put('reservations/{id}', [ReservationController::class, 'update'])->name('reservations.update');
     Route::delete('reservations/{id}', [ReservationController::class, 'destroy'])->name('reservations.destroy');
+    Route::get('/reservations', [ReservationController::class, 'index'])->name('reservations.index');
 
     // Routes pour les brouillons
     Route::resource('drafts', DraftController::class);

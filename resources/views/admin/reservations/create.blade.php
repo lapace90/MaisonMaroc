@@ -45,13 +45,13 @@
                             </div>
                             <div class="form-group">
                                 <label for="number_of_children">Nombre d'Enfants' :</label>
-                                <input type="number" name="number_of_children" class="form-control" min="0">
+                                <input type="number" name="number_of_children" class="form-control" min="0" value="0">
                             </div>
                             <div class="form-group col-sm-8">
                                 <label for="room_type_id">Type de Chambre :</label>
                                 <select id="res_rooms" name="room_type_id" required multiple>
                                     @foreach ($rooms as $room)
-                                        <option data-price="{{ $room->price }}">{{ $room->name }}</option>
+                                        <option data-price="{{ $room->price }}" value="{{ $room->id }}">{{ $room->name }}</option>
                                     @endforeach
                                 </select>
                             </div>

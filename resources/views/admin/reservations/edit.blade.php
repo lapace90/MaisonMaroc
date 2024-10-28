@@ -60,11 +60,10 @@
                                 <label for="number_of_children">Nombre d'Enfants' :</label>
                                 <input type="number" name="number_of_children" class="form-control" min="0" value="{{ $reservation->number_of_children}}">
                             </div>
-                            <div class="form-group custom-select">
-                                <label for="room_type_id">Type de Chambre :</label>
-                                <select name="room_type_id" required>
+                            <div class="form-group">
+                                <select id="reservation_rooms" name="room_type_id" required multiple>
                                     @foreach ($rooms as $room)
-                                        <option value="{{ $room->id }}">{{ $room->name }}</option>
+                                        <option value="{{ $room->id }}" data-price="{{ $room->price }}" {{ in_array($room->id, $reservation->rooms->pluck('id')->toArray()) ? 'selected' : ''}}>{{ $room->name }}</option>
                                     @endforeach
                                 </select>
                             </div>
@@ -73,7 +72,7 @@
                                 <select id="reservation_menu" name="reservation_menu[]" class="form-control" multiple>
                                     @foreach ($menus as $menu)
                                         <option value="{{ $menu->id }}" data-price="{{ $menu->price }}"
-                                            {{ in_array($menu->id, $reservation->menus->pluck('id')->toArray()) ? 'selected' : '' }}>
+                                            {{ $reservation->menus && in_array($menu->id, $reservation->menus->pluck('id')->toArray()) ? 'selected' : '' }}>
                                             {{ $menu->name }}
                                         </option>
                                     @endforeach
@@ -84,7 +83,7 @@
                                 <select id="reservation_activity" name="reservation_activity[]" class="form-control" multiple>
                                     @foreach ($activities as $activity)
                                         <option value="{{ $activity->id }}" data-price="{{ $activity->price }}"
-                                            {{ in_array($activity->id, $reservation->activities->pluck('id')->toArray()) ? 'selected' : '' }}>
+                                            {{ $reservation->activities && in_array($activity->id, $reservation->activities->pluck('id')->toArray()) ? 'selected' : '' }}>
                                             {{ $activity->name }}
                                         </option>
                                     @endforeach
@@ -159,6 +158,11 @@
                 placeholder: true,
                 placeholderValue: 'Sélectionner les activités',
             });
+            const roomChoices = new Choices('#reservation_rooms', {
+                removeItemButton: true,
+                placeholder: true,
+                placeholderValue: 'Sélectionner les chambres',
+            });
 
             const amountInput = document.getElementById('amount');
 
@@ -177,6 +181,13 @@
                 selectedActivities.forEach(activityId => {
                     const activityOption = document.querySelector(`#reservation_activity option[value="${activityId}"]`);
                     totalAmount += parseFloat(activityOption.getAttribute('data-price'));
+                });
+
+                // Calculate total for selected rooms
+                const selectedRooms = roomChoices.getValue(true);
+                selectedRooms.forEach(roomId => {
+                    const roomOption = document.querySelector(`#reservation_rooms option[value="${roomId}`);
+                    totalAmount += parseFloat(roomOption.getAttribute('data-price'));
                 });
 
                 amountInput.value = totalAmount.toFixed(2);
